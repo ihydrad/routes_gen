@@ -44,10 +44,7 @@ def route_add(target, adapter, network_address, network_mask, gateway_address, m
     return return_with_check_status(res)
  
 def generate_routes(hsm, adapter, adapter_addr, start, count):
-    if start:
-        ip = ip_address(start)
-    else:
-        ip = ip_address("192.168.0.1")
+    ip = ip_address(start if start else "192.168.0.1")
     for i in range(count):
         print(f"route#{i+1}: ", end="")
         ip = ip + 4
