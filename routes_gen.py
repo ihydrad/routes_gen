@@ -42,9 +42,12 @@ def route_add(target, adapter, network_address, network_mask, gateway_address, m
     }
     res = post(target, endpoint_route_add, payload)
     return return_with_check_status(res)
-    
-def generate_routes(hsm, adapter, adapter_addr, count):
-    ip = ip_address("192.168.0.1")
+ 
+def generate_routes(hsm, adapter, adapter_addr, start, count):
+    if start:
+        ip = ip_address(start)
+    else:
+        ip = ip_address("192.168.0.1")
     for i in range(count):
         print(f"route#{i+1}: ", end="")
         ip = ip + 4
@@ -68,19 +71,21 @@ if __name__ == "__main__":
     parser.add_argument('--target', type=str, required=True, help='IP-address HSM')
     parser.add_argument('--adapter', type=str, required=True, help='id адаптера через который будет проходить маршрут')
     parser.add_argument('--count', type=int, required=True, help='Количество добавляемых маршрутов')
+    parser.add_argument('--start', type=str, help='Количество добавляемых маршрутов')
     args = parser.parse_args()
     try:
         ip_address(args.target)
+        if args.start:
+            ip_address(args.start)
     except:
         print("Неверный ip-адрес")
         sys.exit(1)
     if not args.count or args.count > 256:
         print("Количество маршрутов можно указать от 1 до 256")
         sys.exit(1)
-    adapters = ['0', '1', '10', '11']
+    adapters = ['0', '1', '2', '3', '10', '11', '12', '13']
     if args.adapter not in adapters:
         print("Введите адаптер из списка" + str(adapters))
         sys.exit(1)
-    
     adapter_addr = get_addr_for(args.target, adapter=args.adapter)
-    generate_routes(args.target, args.adapter, adapter_addr, args.count)
+    generate_routes(hsm=args.target, adapter=args.adapter, adapter_addr=adapter_addr, start=args.start, count=args.count)
