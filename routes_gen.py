@@ -64,7 +64,7 @@ def get_addr_for(target, adapter:int):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Routes generator')
+    parser = argparse.ArgumentParser(description='Routes generator by @ihydrad')
     parser.add_argument('--target', type=str, required=True, help='IP-address HSM: [routes_gen.py --target 172.16.56.3 --adapter 1 --count 256]')
     parser.add_argument('--adapter', type=str, required=True, help='id адаптера через который будет проходить маршрут')
     parser.add_argument('--count', type=int, required=True, help='Количество добавляемых маршрутов')
